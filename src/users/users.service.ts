@@ -86,14 +86,14 @@ export class UsersService {
         }
     }
 
-    private decode(token): object | Error {
+    public decode(token): object | Error {
         try {
             return jwt.verify(token,private_key);
         } catch (e) {
             throw new BadRequestException("올바르지 않은 유저입니다.");
         }
     }
-    private sign(payload: any): string {
+    public sign(payload: any): string {
         return jwt.sign(payload, private_key);
     }
 }
