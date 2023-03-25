@@ -1,5 +1,5 @@
 import { AxiosError } from './../../node_modules/axios/index.d';
-import { UserLoginDto } from './dtos/user.login.dto';
+import { UserInfo, UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
 import { PrismaService } from './../prisma.service';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { User } from '@prisma/client';
@@ -29,9 +29,17 @@ export class UsersService {
         return user;
     }
 
+    async register(data: UserInfo) {
+        return this.prisma.user.upsert({
+            where: {
+                email: data.email
+            },
+            update: { ...data },
+            create: { ...data },
+        });
+    }
 
-
-    async kakao_login(userLoginDto: UserLoginDto): Promise<String | Error | any> {
+    async kakao_login(userLoginDto: UserLoginRequestDto): Promise<UserLoginResponseDto> {
         const kakao_me = process.env.KAKAO_GET_USER_INFO;
         const { code } = userLoginDto;
         const {access_token} = await this.getKakaoAccessToken(code);
@@ -44,20 +52,21 @@ export class UsersService {
                 })
             );
             const email = data.kakao_account.email;
-            const { nickname, profile_image_url } = data.kakao_account.profile
-            const userInfo = {
+            const { nickname, profile_image_url } = data.kakao_account.profile;
+            const userInfo:UserInfo = {
                 email,
                 nickname,
                 profile_image_url
             };
-            return {...userInfo, access_token: this.sign(userInfo)}
+            const user = await this.register(userInfo);
+            return { ...user, access_token: this.sign(userInfo) };
         } catch (e) {
             console.log(e);
             throw new BadRequestException("존재하지 않는 사용자입니다.")
         }
     }
 
-    async getKakaoAccessToken(code) {
+    async getKakaoAccessToken(code: string) {
         const url = process.env.KAKAO_OUATH_TOKEN_URL;
         const grant_type = process.env.KAKAO_OAUTH_GRANT_TYPE;
         const client_id = process.env.KAKAO_CLIENT_ID;
@@ -66,7 +75,6 @@ export class UsersService {
             'Content-type':'application/x-www-form-urlencoded;charset=utf-8'
         }
         try {
-            
             const {data}: any = await lastValueFrom(this.http.post(url, {
                 grant_type,
                 client_id,
