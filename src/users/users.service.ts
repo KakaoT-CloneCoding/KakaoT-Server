@@ -41,8 +41,8 @@ export class UsersService {
 
     async kakao_login(userLoginDto: UserLoginRequestDto): Promise<UserLoginResponseDto> {
         const kakao_me = process.env.KAKAO_GET_USER_INFO;
-        const { code } = userLoginDto;
-        const {access_token} = await this.getKakaoAccessToken(code);
+        const { access_token } = userLoginDto;
+        // const {access_token} = await this.getKakaoAccessToken(code);
         try { 
             const { data } = await lastValueFrom(
                 this.http.get(kakao_me, {
@@ -65,6 +65,7 @@ export class UsersService {
             throw new BadRequestException("존재하지 않는 사용자입니다.")
         }
     }
+  
 
     async getKakaoAccessToken(code: string) {
         const url = process.env.KAKAO_OUATH_TOKEN_URL;

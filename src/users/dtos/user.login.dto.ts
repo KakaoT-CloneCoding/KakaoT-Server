@@ -4,25 +4,30 @@ import { IsEmail, IsEmpty, IsJWT, IsNumber, IsString, IsUrl } from "class-valida
 export class UserLoginRequestDto {
     @IsString()
     @ApiProperty({description:'kakao api에서 받은 code'})
-    readonly code: string;
+    readonly access_token: string;
 }
 
 export class UserInfo {
+
+    @ApiProperty({description: 'primary key'})
     @IsNumber()
     readonly id?: number | undefined;
 
+
+    @ApiProperty({description:'유저의 이메일'})
     @IsString()
     @IsEmail()
-    @ApiProperty({description:'유저의 이메일'})
     readonly email: string;
 
-    @IsString()
+
     @ApiProperty({description:'유저의 닉네임'})
+    @IsString()
     readonly nickname: string;
 
+   
+    @ApiProperty({ description: '유저 프로파일 이미지 url' })
     @IsString()
     @IsUrl()
-    @ApiProperty({description:'유저 프로파일 이미지 url'})
     readonly profile_image_url: string;
 }
 
