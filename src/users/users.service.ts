@@ -1,3 +1,4 @@
+import { JwtService } from './../jwt/jwt.service';
 import { AxiosError } from './../../node_modules/axios/index.d';
 import { UserInfo, UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
 import { PrismaService } from './../prisma.service';
@@ -6,12 +7,12 @@ import { User } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { HttpService } from '@nestjs/axios';
 import { catchError, lastValueFrom } from 'rxjs';
-const private_key = `${ process.env.JWT_SECRET_KEY }`;
 @Injectable()
 export class UsersService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly http: HttpService
+        private readonly http: HttpService,
+        private readonly jwtService: JwtService
     ) { }
 
     async findUserOrNull(email: string): Promise<User | Error> {
@@ -22,7 +23,7 @@ export class UsersService {
     }
     
     async getUserByAccessToken(token: string) { 
-        const decode = this.decode(token) as any;
+        const decode = this.jwtService.decode(token) as any;
         const user = await this.prisma.user.findUnique({
             where: { email: decode.email }
         });
@@ -41,8 +42,9 @@ export class UsersService {
 
     async kakao_login(userLoginDto: UserLoginRequestDto): Promise<UserLoginResponseDto> {
         const kakao_me = process.env.KAKAO_GET_USER_INFO;
+        
+        // const { access_token } = await this.getKakaoAccessToken(userLoginDto.access_token);
         const { access_token } = userLoginDto;
-        // const {access_token} = await this.getKakaoAccessToken(code);
         try { 
             const { data } = await lastValueFrom(
                 this.http.get(kakao_me, {
@@ -59,7 +61,7 @@ export class UsersService {
                 profile_image_url
             };
             const user = await this.register(userInfo);
-            return { ...user, access_token: this.sign(userInfo) };
+            return { ...user, access_token: this.jwtService.sign(userInfo) };
         } catch (e) {
             console.log(e);
             throw new BadRequestException("존재하지 않는 사용자입니다.")
@@ -95,14 +97,4 @@ export class UsersService {
         }
     }
 
-    public decode(token): object | Error {
-        try {
-            return jwt.verify(token,private_key);
-        } catch (e) {
-            throw new BadRequestException("올바르지 않은 유저입니다.");
-        }
-    }
-    public sign(payload: any): string {
-        return jwt.sign(payload, private_key);
-    }
 }
