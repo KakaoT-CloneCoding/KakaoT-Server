@@ -44,7 +44,6 @@ export class UsersController {
         type: UserLoginResponseDto,
         description: '유저정보 또는 에러',
     })
-        
     @ApiBody({
         type: UserLoginRequestDto,
         description: '로그인 Body',
