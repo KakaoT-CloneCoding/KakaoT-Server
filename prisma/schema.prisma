@@ -10,10 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  DRIVER
+  CLIENT
+}
+
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
   nickname    String?
   profile_image_url String?
-  
+  role Role?
 }
