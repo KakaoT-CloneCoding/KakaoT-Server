@@ -2,7 +2,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsEmpty, IsJWT, IsNumber, IsString, IsUrl } from "class-validator";
 
 export class UserLoginRequestDto {
-    @IsString()
+    @IsString({
+        message:"access_token 에러"
+    })
     @ApiProperty({description:'kakao api에서 받은 code'})
     readonly access_token: string;
 }
@@ -12,7 +14,6 @@ export class UserInfo {
     @ApiProperty({description: 'primary key'})
     @IsNumber()
     readonly id?: number | undefined;
-
 
     @ApiProperty({description:'유저의 이메일'})
     @IsString()

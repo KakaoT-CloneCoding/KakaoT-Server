@@ -2,7 +2,7 @@ import { JwtService } from './../jwt/jwt.service';
 import { AxiosError } from './../../node_modules/axios/index.d';
 import { UserInfo, UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
 import { PrismaService } from './../prisma.service';
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { User } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { HttpService } from '@nestjs/axios';
@@ -12,7 +12,8 @@ export class UsersService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly http: HttpService,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        @Inject('KAKAO_GET_USER_INFO') private readonly kakaoUserInfoUrl
     ) { }
 
     async findUserOrNull(email: string): Promise<User | Error> {
@@ -41,8 +42,7 @@ export class UsersService {
     }
 
     async kakao_login(userLoginDto: UserLoginRequestDto): Promise<UserLoginResponseDto> {
-        const kakao_me = process.env.KAKAO_GET_USER_INFO;
-        
+        // const kakao_me = process.env.KAKAO_GET_USER_INFO;
         // const { access_token } = await this.getKakaoAccessToken(userLoginDto.access_token);
         const { access_token } = userLoginDto;
         try { 
