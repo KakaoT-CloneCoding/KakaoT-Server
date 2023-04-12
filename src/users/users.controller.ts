@@ -2,12 +2,14 @@ import { PrismaService } from 'src/prisma.service';
 import {  UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
 import { UsersService } from './users.service';
 import { Controller, Post, Get, Headers, BadRequestException, Body, Req } from '@nestjs/common';
-import {  ApiBody,  ApiHeader,  ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiOperation, ApiResponse } from '@nestjs/swagger';
+
 @Controller('users')
 export class UsersController {
     constructor(
         private readonly usersService: UsersService,
-        private readonly prismaService:PrismaService
+        private readonly prismaService: PrismaService,
+
     ) { }
     
     // @Get('/me')

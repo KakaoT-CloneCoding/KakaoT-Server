@@ -13,8 +13,8 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: process.env.NODE_ENV === 'prod' ? '.env' : '.env.dev',
       isGlobal:true,
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env',
     }),
     RolesModule,
     UsersModule,

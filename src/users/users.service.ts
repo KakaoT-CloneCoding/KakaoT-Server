@@ -4,7 +4,6 @@ import { UserInfo, UserLoginRequestDto, UserLoginResponseDto } from './dtos/user
 import { PrismaService } from './../prisma.service';
 import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { User } from '@prisma/client';
-import * as jwt from 'jsonwebtoken';
 import { HttpService } from '@nestjs/axios';
 import { catchError, lastValueFrom } from 'rxjs';
 @Injectable()
@@ -13,8 +12,10 @@ export class UsersService {
         private readonly prisma: PrismaService,
         private readonly http: HttpService,
         private readonly jwtService: JwtService,
-        @Inject('KAKAO_GET_USER_INFO') private readonly kakaoUserInfoUrl
-    ) { }
+        @Inject('KAKAO_GET_USER_INFO') private readonly kakaoUserInfoUrl : string,
+    ) {
+        console.log(kakaoUserInfoUrl);
+    }
 
     async findUserOrNull(email: string): Promise<User | Error> {
         const user = await  this.prisma.user.findUnique({
@@ -47,7 +48,7 @@ export class UsersService {
         const { access_token } = userLoginDto;
         try { 
             const { data } = await lastValueFrom(
-                this.http.get(kakao_me, {
+                this.http.get(this.kakaoUserInfoUrl, {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }

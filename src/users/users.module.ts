@@ -6,11 +6,14 @@ import { PrismaService } from 'src/prisma.service';
 
 @Module({
   imports:[HttpModule],
-  providers: [UsersService, PrismaService],
-
+  providers: [{
+    provide: 'KAKAO_GET_USER_INFO',
+    useValue: `${process.env.KAKAO_GET_USER_INFO}`
+  },
+    UsersService, PrismaService,
+   
+  ],
   exports:[UsersService],
   controllers: [UsersController]
 })
-export class UsersModule {
-  
-}
+export class UsersModule {}
