@@ -9,6 +9,8 @@ import { UsersModule } from './users/users.module';
 import { JwtModule } from './jwt/jwt.module';
 import { RolesModule } from './auth/roles.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
+import { ClientModule } from './client/client.module';
+import { DriverModule } from './driver/driver.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
     JwtModule.forRoot({
       secret_key:process.env.JWT_SECRET_KEY
     }),
+    ClientModule,
+    DriverModule,
   ],
   providers: [AppService],
   controllers: [AppController],
