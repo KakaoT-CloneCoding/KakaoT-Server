@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { JwtService } from './jwt.service';
 import { Injectable, NestMiddleware } from "@nestjs/common";
 
@@ -10,7 +11,7 @@ export class JwtMiddleware implements NestMiddleware {
         const access_token = req.headers["access_token"];
         if (!access_token) { console.log("false"); next(); return; }
         const decode = this.jwt.decode(access_token);
-        req["user"] = decode;
+        req["user"] = decode as User;
         next();
     }
 }

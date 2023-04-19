@@ -9,7 +9,6 @@ export class UsersController {
     constructor(
         private readonly usersService: UsersService,
         private readonly prismaService: PrismaService,
-
     ) { }
     
     // @Get('/me')

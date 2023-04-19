@@ -62,7 +62,7 @@ export class UsersService {
                 profile_image_url
             };
             const user = await this.register(userInfo);
-            return { ...user, access_token: this.jwtService.sign(userInfo) };
+            return { ...user, access_token: this.jwtService.sign(user) };
         } catch (e) {
             console.log(e);
             throw new BadRequestException("존재하지 않는 사용자입니다.")
