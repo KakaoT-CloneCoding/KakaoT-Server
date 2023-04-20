@@ -1,0 +1,62 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  DRIVER
+  CLIENT
+}
+
+
+//만약 한 Resolvation 에서 user1 user2를 쓸려면 user 과 Resolvation에 각각 다음과 같은 내용 추가해야함 
+//user model ..
+// resolvation1 Resolvation[] @relation("name1")
+// resolvation2 Resolvation[] @relation("name2")
+
+//resolvation model ...
+  // client       User     @relation("client", fields: [clientId], references: [id])
+  // clientId     Int
+  // driver       User    @relation("driver", fields: [driverId], references: [id])
+  // driverId     Int
+
+// @relaitin("name1") 이 부분을 맞춰줘야함.
+// resolvations2     Resolvation[] @relation("driver")
+
+model User {
+  id               Int           @id @default(autoincrement())
+  email            String        @unique
+  nickname         String?
+  profile_image_url String?
+  role             Role?
+  requests         Request[]
+  Accepts           Accept[]
+}
+
+model Request {
+  id           Int      @id @default(autoincrement())
+  orderId      String
+  client       User     @relation( fields: [clientId], references: [id])
+  clientId     Int
+  fromAddress  String
+  toAddress    String
+  fromLatitude     Decimal  @db.Decimal(13,10)
+  toLongitude    Decimal  @db.Decimal(13,10)
+  createdAt DateTime @db.Date
+  accept  Accept?
+}
+
+model Accept {
+  id        Int     @id @default(autoincrement())
+  request   Request @relation(fields: [requestId], references: [id])
+  driver User @relation(fields: [driverId], references: [id])
+  requestId Int @unique
+  driverId Int
+  createdAt DateTime @db.Date
+  expiredAt DateTime @db.Date
+}
