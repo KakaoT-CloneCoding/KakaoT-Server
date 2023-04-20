@@ -8,13 +8,20 @@ export class ClientService {
         private readonly prissma: PrismaService
     ) { }
 
-    async request(user:User, clientRequestDto: ClientRequestDto) { 
-        const request = this.prissma.request.create({
-            data: {
-                clientId: user.id,
-                ...clientRequestDto,
-                createdAt:Date()
-            }
-        });
+    async request(user: User, clientRequestDto: ClientRequestDto) { 
+        try {
+            const request = this.prissma.request.create({
+                data: {
+                    clientId: user.id,
+                    ...clientRequestDto,
+                    createdAt:Date()
+                }
+            });
+            //socket 연동 
+        } catch (e) {
+            throw Error("등록에 실패하였습니다.");
+        }
+        
     }
 }
+
