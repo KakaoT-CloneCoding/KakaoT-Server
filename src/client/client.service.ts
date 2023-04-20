@@ -1,27 +1,25 @@
+import { RequestService } from './request.service';
 import { User } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ClientService {
     constructor(
-        private readonly prissma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly requestService:RequestService,
     ) { }
 
-    async request(user: User, clientRequestDto: ClientRequestDto) { 
+    async createRequest(user: User, clientRequestDto: ClientRequestDto) { 
         try {
-            const request = this.prissma.request.create({
-                data: {
-                    clientId: user.id,
-                    ...clientRequestDto,
-                    createdAt:Date()
-                }
-            });
-            //socket 연동 
+            const orderNumber = this.requestService.createOrderNumber();
+            const request = await this.requestService.createRequest(user, orderNumber, clientRequestDto);
+            //socket 연결 
+            return true;
         } catch (e) {
             throw Error("등록에 실패하였습니다.");
         }
-        
     }
 }
 

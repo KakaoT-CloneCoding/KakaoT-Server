@@ -1,19 +1,25 @@
+import { PrismaService } from '../prisma/prisma.service';
 import { Roles } from 'src/auth/roles.decorator';
 import { ClientService } from './client.service';
-import { Body, Controller } from '@nestjs/common';
+import { Body, Controller, Get } from '@nestjs/common';
 import { User } from 'src/users/user.decorator';
 
 @Controller('client')
-@Roles('client')
+// @Roles('client')
 export class ClientController {
     constructor(
-        private readonly clientService:ClientService
+        private readonly clientService: ClientService,
+        private readonly prisma:PrismaService
     ) { }
 
-    async request(
-        @User() user,
-        @Body() clientRequestDto: ClientRequestDto
-    ) {
-        return this.clientService.request(user, clientRequestDto);
+    // async request(
+    //     @User() user,
+    //     @Body() clientRequestDto: ClientRequestDto
+    // ) {
+    //     return this.clientService.createRequest(user, clientRequestDto);
+    // }
+    @Get('')
+    async test() {
+        console.log("prismaService", this.prisma.user);
     }
 }

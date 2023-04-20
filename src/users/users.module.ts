@@ -2,7 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   imports:[HttpModule],
@@ -10,7 +10,7 @@ import { PrismaService } from 'src/prisma.service';
     provide: 'KAKAO_GET_USER_INFO',
     useValue: `${process.env.KAKAO_GET_USER_INFO}`
   },
-    UsersService, PrismaService,
+    UsersService,
    
   ],
   exports:[UsersService],

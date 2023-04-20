@@ -1,4 +1,4 @@
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import {  UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
 import { UsersService } from './users.service';
 import { Controller, Post, Get, Headers, BadRequestException, Body, Req } from '@nestjs/common';

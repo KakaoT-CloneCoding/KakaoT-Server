@@ -1,7 +1,7 @@
 import { JwtService } from './../jwt/jwt.service';
 import { AxiosError } from './../../node_modules/axios/index.d';
 import { UserInfo, UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
-import { PrismaService } from './../prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { HttpService } from '@nestjs/axios';
