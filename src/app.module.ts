@@ -10,6 +10,7 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 import { ClientModule } from './client/client.module';
 import { DriverModule } from './driver/driver.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { RepositoryModule } from './repository/repository.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PrismaModule } from './prisma/prisma.module';
     }),
     ClientModule,
     DriverModule,
+    RepositoryModule
   ],
   providers: [],
   controllers: [],

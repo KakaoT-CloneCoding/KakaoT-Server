@@ -1,13 +1,11 @@
 import { RequestService } from './request.service';
 import { User } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ClientService {
     constructor(
-        private readonly prisma: PrismaService,
         private readonly requestService:RequestService,
     ) { }
 

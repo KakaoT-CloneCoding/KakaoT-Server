@@ -1,45 +1,49 @@
 import { JwtService } from './../jwt/jwt.service';
 import { AxiosError } from './../../node_modules/axios/index.d';
 import { UserInfo, UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
-import { PrismaService } from '../prisma/prisma.service';
 import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { HttpService } from '@nestjs/axios';
 import { catchError, lastValueFrom } from 'rxjs';
+import { UserRepository } from 'src/repository/user.repository';
 @Injectable()
 export class UsersService {
     constructor(
-        private readonly prisma: PrismaService,
+        private readonly userRepository: UserRepository,
         private readonly http: HttpService,
         private readonly jwtService: JwtService,
-        @Inject('KAKAO_GET_USER_INFO') private readonly kakaoUserInfoUrl : string,
+        @Inject('KAKAO_GET_USER_INFO') private readonly kakaoUserInfoUrl: string,
     ) {
         console.log(kakaoUserInfoUrl);
     }
 
-    async findUserOrNull(email: string): Promise<User | Error> {
-        const user = await  this.prisma.user.findUnique({
-            where: {email}
-        });
-        return user ?? null;
-    }
-    
-    async getUserByAccessToken(token: string) { 
-        const decode = this.jwtService.decode(token) as any;
-        const user = await this.prisma.user.findUnique({
-            where: { email: decode.email }
-        });
-        return user;
-    }
+    // async findUserOrNull(email: string): Promise<User | Error> {
+    //     const user = await  this.prisma.user.findUnique({
+    //         where: {email}
+    //     });
+    //     return user ?? null;
+    // }
 
-    async register(data: UserInfo) {
-        return this.prisma.user.upsert({
-            where: {
-                email: data.email
-            },
-            update: { ...data },
-            create: { ...data },
-        });
+    // async getUserByAccessToken(token: string) {
+    //     const decode = this.jwtService.decode(token) as any;
+    //     const user = await this.prisma.user.findUnique({
+    //         where: { email: decode.email }
+    //     });
+    //     return user;
+    // }
+
+    // async register(data: UserInfo) {
+    //     return this.prisma.user.upsert({
+    //         where: {
+    //             email: data.email
+    //         },
+    //         update: { ...data },
+    //         create: { ...data },
+    //     });
+    // }
+
+    async getMe(user) {
+        return this.userRepository.getUserByEmail(user.email);
     }
 
     async kakao_login(userLoginDto: UserLoginRequestDto): Promise<UserLoginResponseDto> {
@@ -61,7 +65,7 @@ export class UsersService {
                 nickname,
                 profile_image_url
             };
-            const user = await this.register(userInfo);
+            const user = await this.userRepository.register(userInfo);
             return { ...user, access_token: this.jwtService.sign(user) };
         } catch (e) {
             console.log(e);

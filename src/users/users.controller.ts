@@ -3,12 +3,12 @@ import {  UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dt
 import { UsersService } from './users.service';
 import { Controller, Post, Get, Headers, BadRequestException, Body, Req } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { User } from './user.decorator';
 
 @Controller('users')
 export class UsersController {
     constructor(
         private readonly usersService: UsersService,
-        private readonly prismaService: PrismaService,
     ) { }
     
     // @Get('/me')
@@ -26,18 +26,10 @@ export class UsersController {
         required:true
     })
     async me(
-        @Req() req,
-        @Headers() headers,
+        @User() user,
     ) {
-        const user = this.prismaService.user.findUnique({
-            where: {
-                email: req["user"].email
-            }
-        });
-        console.log(user);
-        return user;
+        return this.usersService.getMe(user)
     }
-
 
     @Post('')
     @ApiOperation({ summary: '카카오 로그인 / 회원가입 API', description:'유저가 없을 시 생성하고 유저 정보를 리턴 / 유저가 있을 시 유저 정보 리턴'})
@@ -61,5 +53,4 @@ export class UsersController {
     //     const access = 'ZQdzIzSvfxg75iKwzRDHMR7WLM81Tg5K4TUcAPufCj11XAAAAYcFTaPF';
         
     // }
-    
 }

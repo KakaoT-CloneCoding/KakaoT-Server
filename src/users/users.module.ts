@@ -11,7 +11,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
     useValue: `${process.env.KAKAO_GET_USER_INFO}`
   },
     UsersService,
-   
   ],
   exports:[UsersService],
   controllers: [UsersController]
