@@ -13,8 +13,7 @@ export class ClientService {
         try {
             const orderNumber = this.requestService.createOrderNumber();
             const request = await this.requestService.createRequest(user, orderNumber, clientRequestDto);
-            //socket 연결 
-            return true;
+            return request ?? null;
         } catch (e) {
             throw Error("등록에 실패하였습니다.");
         }
