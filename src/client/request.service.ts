@@ -20,7 +20,7 @@ export class RequestService {
         return onumber ?? uuidv4();
     }
 
-    async getRequestByOrderId(orderId):Promise<Request> {
+    async getRequestByOrderId(orderId):Promise<Request | Error> {
         return await this.requestRepository.getRequestByOrderIdOrError(orderId);
     }
 

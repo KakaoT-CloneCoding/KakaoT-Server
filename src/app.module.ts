@@ -11,6 +11,8 @@ import { ClientModule } from './client/client.module';
 import { DriverModule } from './driver/driver.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { RepositoryModule } from './repository/repository.module';
+import { ChatGateway } from './chat/chat.gateway';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -26,9 +28,10 @@ import { RepositoryModule } from './repository/repository.module';
     }),
     ClientModule,
     DriverModule,
-    RepositoryModule
+    RepositoryModule,
+    ChatModule
   ],
-  providers: [],
+  providers: [ChatGateway],
   controllers: [],
 })
 export class AppModule implements NestModule{
