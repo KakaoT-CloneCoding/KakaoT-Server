@@ -19,7 +19,5 @@ export class DriverService {
         // const isRequest = await this.requestRepository.getRequestAndAcceptByOrderId(orderId);
         // console.log(isRequest);
         const isAccept = await this.acceptService.createAccept(user, orderId)
-        console.log(isAccept);
-        
     }
 }

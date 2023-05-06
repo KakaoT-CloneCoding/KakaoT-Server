@@ -13,7 +13,7 @@ export class DriverController {
         @User() user,
         @Param('orderId') orderId
     ) {
-        return this.driverService.createAccept(user, orderId);
+        return this.driverService.createAccept(user,orderId)
     }
 
 
