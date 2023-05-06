@@ -5,7 +5,6 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from './jwt/jwt.module';
-import { RolesModule } from './auth/roles.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { ClientModule } from './client/client.module';
 import { DriverModule } from './driver/driver.module';
@@ -20,8 +19,7 @@ import { ChatModule } from './chat/chat.module';
       isGlobal:true,
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env',
     }),
-    PrismaModule,
-    RolesModule,
+    // PrismaModule,
     UsersModule,
     JwtModule.forRoot({
       secret_key:process.env.JWT_SECRET_KEY
@@ -31,7 +29,7 @@ import { ChatModule } from './chat/chat.module';
     RepositoryModule,
     ChatModule
   ],
-  providers: [ChatGateway],
+  providers: [],
   controllers: [],
 })
 export class AppModule implements NestModule{

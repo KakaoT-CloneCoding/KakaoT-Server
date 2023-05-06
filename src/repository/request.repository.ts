@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { User } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 
 
@@ -13,11 +14,14 @@ export class RequestRepository {
     async create(user, orderNumber, clientRequestDto) {
         return this.prisma.request.create({
             data: {
-                clientId: user.id,
                 orderId: orderNumber,
                 ...clientRequestDto,
-                createdAt:Date()
-            }
+                client: {
+                    connect: {
+                        email: user.email,
+                      },
+                }
+            },
         });
     }
 
@@ -37,5 +41,14 @@ export class RequestRepository {
             }
         });
         return request ??  new Error("없는 요청입니다.");
+    }
+
+    async getUnresolvedRequestsByUserId(user : User) {
+        return this.prisma.request.findFirst({
+            where: {
+                clientId: user.id,
+            },
+            
+        });
     }
 }

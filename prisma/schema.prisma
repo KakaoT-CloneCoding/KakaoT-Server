@@ -45,11 +45,17 @@ model Request {
   orderId      String
   client       User     @relation( fields: [clientId], references: [id])
   clientId     Int
-  fromAddress  String
-  toAddress    String
-  fromLatitude     Decimal  @db.Decimal(13,10)
-  toLongitude    Decimal  @db.Decimal(13,10)
+  departureAddress  String
+  destinationAddress     String
+   
+  departureLatitude     Decimal  @db.Decimal(13,10)
+  departureLongitude    Decimal  @db.Decimal(13,10)
+  
+  destinationLatitude    Decimal  @db.Decimal(13,10)
+  destinationLongitude    Decimal  @db.Decimal(13,10)
+
   createdAt DateTime @default(now())
+  deletedAt DateTime? 
   accept  Accept?
 }
 

@@ -29,4 +29,10 @@ export class UserRepository {
         });
     }
 
+    async getUserById(id: number) {
+        return this.prisma.user.findFirst({
+            where:{id:+id}
+        })
+    }
+
 }

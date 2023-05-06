@@ -1,7 +1,7 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import {  UserLoginRequestDto, UserLoginResponseDto } from './dtos/user.login.dto';
 import { UsersService } from './users.service';
-import { Controller, Post, Get, Headers, BadRequestException, Body, Req } from '@nestjs/common';
+import { Controller, Post, Get, Headers, BadRequestException, Body, Req, Param } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from './user.decorator';
 
@@ -46,6 +46,12 @@ export class UsersController {
         @Body()  userLoginDto: UserLoginRequestDto
     ): Promise<UserLoginResponseDto> {
         return this.usersService.kakao_login(userLoginDto);
+    }
+
+    @Post(':id')
+    async testLogin(@Param('id') id) { 
+        console.log(id)
+        return this.usersService.testLogin(id)
     }
 
     // @Get()

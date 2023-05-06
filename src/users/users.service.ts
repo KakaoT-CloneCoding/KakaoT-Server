@@ -72,7 +72,11 @@ export class UsersService {
             throw new BadRequestException("존재하지 않는 사용자입니다.")
         }
     }
-  
+    async testLogin(id) {
+        const user = await this.userRepository.getUserById(id);
+        const access_token = this.jwtService.sign(user);
+        return { ...user, access_token}
+    }
 
     async getKakaoAccessToken(code: string) {
         const url = process.env.KAKAO_OUATH_TOKEN_URL;

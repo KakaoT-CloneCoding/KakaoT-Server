@@ -24,8 +24,7 @@ export class UserInfo {
     @ApiProperty({description:'유저의 닉네임'})
     @IsString()
     readonly nickname: string;
-
-   
+    
     @ApiProperty({ description: '유저 프로파일 이미지 url' })
     @IsString()
     @IsUrl()
