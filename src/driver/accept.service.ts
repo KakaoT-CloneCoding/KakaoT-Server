@@ -6,8 +6,6 @@ import { RequestRepository } from 'src/repository/request.repository';
 
 
 @Injectable()
-@Roles('driver')
-  
 export class AcceptService{
 
   constructor(
