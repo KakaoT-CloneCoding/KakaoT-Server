@@ -28,7 +28,10 @@ export class RequestRepository {
     async getRequestByOrderId(orderId) {
         const request = await this.prisma.request.findFirst({
             where: {
-                orderId 
+                orderId,
+                accept: {
+                    
+                }
             }
         });
         return request;
@@ -47,8 +50,32 @@ export class RequestRepository {
         return this.prisma.request.findFirst({
             where: {
                 clientId: user.id,
+                
             },
             
         });
     }
+
+    async getRequests(user:User) {
+        return this.prisma.request.findMany({
+            where: {
+                clientId: user.id,
+            },
+            include: {
+                accept: true
+            }
+        });
+    }
+
+    async getRequestAndAcceptByOrderId(orderId) {
+        return this.prisma.request.findFirst({
+            where: {
+                orderId,
+            },
+            include: {
+                accept:true
+            }
+        })
+     }
+    
 }

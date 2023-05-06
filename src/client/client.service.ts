@@ -12,21 +12,20 @@ export class ClientService {
         private readonly requestRepository : RequestRepository
     ) { }
 
-    async create(user: User, clientRequestDto: ClientCreateRequestDto) {
-        const requestCheck = await this.requestRepository.getUnresolvedRequestsByUserId(user);
-    }
-
     async createRequest(user: User, clientRequestDto: ClientCreateRequestDto) { 
         try {
             const requestCheck = await this.requestRepository.getUnresolvedRequestsByUserId(user);
-            console.log(requestCheck)
             const orderNumber = this.requestService.createOrderNumber();
             const request = await this.requestService.createRequest(user, orderNumber, clientRequestDto);
-            return request ?? null;
+           
         } catch (e) {
             console.log(e);
             throw Error("등록에 실패하였습니다.");
         }
+    }
+
+    async test(user) {
+        return this.requestRepository.getRequests(user);
     }
 
     // async checkStatus(user:User) {

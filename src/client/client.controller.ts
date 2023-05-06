@@ -18,6 +18,11 @@ export class ClientController {
         return this.clientService.createRequest(user, clientRequestDto);
     }
 
+    
+    @Get('')
+    async findClientRequest(@User() user) {
+        return this.clientService.test(user);
+    }
     // @Get('request/:id')
     // async myRequest(
     //     @User() user,

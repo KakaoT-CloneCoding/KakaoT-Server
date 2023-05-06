@@ -9,7 +9,7 @@ export class ClientCreateRequestDto{
 
     @IsString({ message: '도착지 주소가 올바르지 않습니다.' })
     @ApiProperty({description: '도착지 주소'})
-    departureLddress: string;
+    destinationAddress: string;
 
     @IsLatitude({ message: '출발지 위도가 올바르지 않습니다.' })
     @ApiProperty({description:'출발지 위도'})

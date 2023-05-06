@@ -17,7 +17,8 @@ export class AcceptRepository{
             }});
     }
 
-    async create(user: User, request:Request) {
+    async create(user: User, request: Request) {
+        console.log(user, request)
         return this.prisma.accept.create({
             data: {
                 requestId: request.id,

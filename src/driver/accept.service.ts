@@ -17,20 +17,17 @@ export class AcceptService{
     
   async createAccept(user, orderId) {
     try {
-      const request = await this.requestRepository.getRequestByOrderId(orderId);
-      
+      const request = await this.requestRepository.getRequestAndAcceptByOrderId(orderId);
+      console.log(request);
       if (request == null) throw new Error("존재하지 않는 요청입니다.");
 
-      const isAccept = await this.acceptRepository.isAcceptRequestId(request);
-      
-      if (isAccept) return "이미 수락된 요청입니다.";
-      
+      if (request.accept) throw new Error("이미 수락된 요청입니다.")
+
       await this.acceptRepository.create(user, request);
-      
+
       return true;
     } catch (e) {
-      throw new Error(e);
+      return e;
     }
-      // const createAccpet = this.acceptRepository.create();  
   }
 }
