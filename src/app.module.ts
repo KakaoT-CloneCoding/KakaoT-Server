@@ -1,5 +1,4 @@
 import { UsersController } from './users/users.controller';
-import { LoggerMiddleware } from './logger/logger.middleware';
 import { HttpModule } from '@nestjs/axios';
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -12,6 +11,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ChatGateway } from './chat/chat.gateway';
 import { ChatModule } from './chat/chat.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggerMiddleware } from './logger/logger.middleware';
 
 @Module({
   imports: [
@@ -27,9 +28,9 @@ import { ChatModule } from './chat/chat.module';
     ClientModule,
     DriverModule,
     RepositoryModule,
-    ChatModule
+    ChatModule,
   ],
-  providers: [],
+  providers:[],
   controllers: [],
 })
 export class AppModule implements NestModule{
