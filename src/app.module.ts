@@ -12,7 +12,7 @@ import { RepositoryModule } from './repository/repository.module';
 import { ChatGateway } from './chat/chat.gateway';
 import { ChatModule } from './chat/chat.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggerMiddleware } from './logger/logger.middleware';
+import { LoggerInterceptor } from './logger/logger.interceptor';
 
 @Module({
   imports: [
@@ -30,13 +30,18 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     RepositoryModule,
     ChatModule,
   ],
-  providers:[],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggerInterceptor
+    }
+  ],
   controllers: [],
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
   
-    consumer.apply(LoggerMiddleware).forRoutes("*");
+    // consumer.apply(LoggerMiddleware).forRoutes("*");
     consumer.apply(JwtMiddleware).forRoutes("*");
   }
 }
