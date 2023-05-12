@@ -20,6 +20,7 @@ export class UserRepository {
     async getUserOrError() { }
     async registerOrLogin() { }
     async register(data: UserInfo) {
+        console.log("test1");
         return this.prisma.user.upsert({
             where: {
                 email: data.email

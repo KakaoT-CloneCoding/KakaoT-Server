@@ -14,7 +14,7 @@ export class UsersService {
         private readonly jwtService: JwtService,
         @Inject('KAKAO_GET_USER_INFO') private readonly kakaoUserInfoUrl: string,
     ) {
-        console.log(kakaoUserInfoUrl);
+        console.log("kakao ",kakaoUserInfoUrl);
     }
 
     // async findUserOrNull(email: string): Promise<User | Error> {
@@ -52,7 +52,7 @@ export class UsersService {
         const { access_token } = userLoginDto;
         try { 
             const { data } = await lastValueFrom(
-                this.http.get(this.kakaoUserInfoUrl, {
+                this.http.get('https://kapi.kakao.com/v2/user/me', {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }
@@ -68,7 +68,7 @@ export class UsersService {
             const user = await this.userRepository.register(userInfo);
             return { ...user, access_token: this.jwtService.sign(user) };
         } catch (e) {
-            console.log(e);
+            console.log(e)
             throw new BadRequestException("존재하지 않는 사용자입니다.")
         }
     }
