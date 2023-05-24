@@ -13,6 +13,7 @@ import { ChatGateway } from './chat/chat.gateway';
 import { ChatModule } from './chat/chat.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerInterceptor } from './logger/logger.interceptor';
+import { RequestModule } from './request/request.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { LoggerInterceptor } from './logger/logger.interceptor';
     DriverModule,
     RepositoryModule,
     ChatModule,
+    RequestModule,
   ],
   providers: [
     {
