@@ -64,4 +64,23 @@ export class RequestService {
       throw Error('등록에 실패하였습니다.');
     }
   }
+
+  async delete(user, requestId: string) {
+    const request = await this.requestRepository.getRequestByOrderId(
+      requestId,
+      {
+        client: true,
+        accept: true,
+      },
+    );
+    if (!request) throw new BadRequestException('존재하지 않는 요청입니다.');
+
+    if (user.id != request.clientId)
+      throw new BadRequestException('잘못된 요청입니다.');
+
+    //기사한테 요청보내야함..
+    if (request.accept != null) return;
+
+    return this.requestRepository.delete(requestId);
+  }
 }

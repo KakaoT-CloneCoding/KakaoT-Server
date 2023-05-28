@@ -21,16 +21,12 @@ export class RequestRepository {
     });
   }
 
-  async getRequestByOrderId(orderId) {
+  async getRequestByOrderId(orderId, options = null) {
     const request = await this.prisma.request.findFirst({
       where: {
         orderId,
-        accept: {},
       },
-      include: {
-        client: true,
-        accept: true,
-      },
+      include: options ? { ...options } : { client: false, accept: false },
     });
     return request;
   }
@@ -76,5 +72,13 @@ export class RequestRepository {
 
   createOrderNumber(onumber = null): string {
     return onumber ?? uuidv4();
+  }
+
+  async delete(requestId: string) {
+    return this.prisma.request.delete({
+      where: {
+        orderId: requestId,
+      },
+    });
   }
 }

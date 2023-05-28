@@ -1,3 +1,4 @@
+import { UserUpdateRequestDto } from './dtos/user.update.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   UserLoginRequestDto,
@@ -13,6 +14,7 @@ import {
   Body,
   Req,
   Param,
+  Put,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -82,9 +84,25 @@ export class UsersController {
     return this.usersService.testLogin(id);
   }
 
-  // @Get()
-  // async getMe() {
-  //     const access = 'ZQdzIzSvfxg75iKwzRDHMR7WLM81Tg5K4TUcAPufCj11XAAAAYcFTaPF';
-
-  // }
+  @Put('/:userId')
+  @ApiHeader({
+    description: '서버에서 발급한 access_token',
+    name: 'access_token',
+    required: true,
+  })
+  @ApiParam({
+    name: 'user id(pk)',
+    description: '유저 pk',
+  })
+  @ApiBody({
+    type: UserUpdateRequestDto,
+    required: true,
+    description:'유저 업데이트 정보'
+  })
+  async userUpdate(
+    @User() user,
+    @Body() userUpdateRequestDto: UserUpdateRequestDto,
+  ) {
+    return this.usersService.userUpdate(user, userUpdateRequestDto);
+  }
 }

@@ -1,3 +1,4 @@
+import { UserUpdateRequestDto } from './../users/dtos/user.update.dto';
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -29,6 +30,14 @@ export class UserRepository {
   async getUserById(id: number) {
     return this.prisma.user.findFirst({
       where: { id: +id },
+    });
+  }
+  async update(user, userUpdateRequestDto) {
+    return this.prisma.user.update({
+      where: { id: +user.id },
+      data: {
+        ...userUpdateRequestDto,
+      },
     });
   }
 }
